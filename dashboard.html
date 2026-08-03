@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEFIC - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <h1 class="logo-text">GEFIC</h1>
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-house"></i> Início
+                </a>
+                
+                <div class="nav-group">
+                    <div class="nav-title">
+                        <span><i class="fa-regular fa-user"></i> Clientes</span>
+                        <i class="fa-solid fa-chevron-down nav-arrow"></i>
+                    </div>
+                    <a href="#" class="nav-sub-item"><i class="fa-solid fa-user-plus"></i> Cadastrar Cliente</a>
+                    <a href="#" class="nav-sub-item"><i class="fa-solid fa-magnifying-glass"></i> Buscar Clientes</a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-title">
+                        <span><i class="fa-solid fa-cart-shopping"></i> Vendas</span>
+                        <i class="fa-solid fa-chevron-down nav-arrow"></i>
+                    </div>
+                    <a href="#" class="nav-sub-item"><i class="fa-solid fa-cart-plus"></i> Cadastrar Venda</a>
+                    <a href="#" class="nav-sub-item"><i class="fa-solid fa-magnifying-glass"></i> Buscar Vendas</a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-title">
+                        <span><i class="fa-solid fa-filter"></i> Filtros</span>
+                        <i class="fa-solid fa-chevron-right nav-arrow"></i>
+                    </div>
+                    <a href="#" class="nav-sub-item"><i class="fa-solid fa-triangle-exclamation"></i> Filtros Vencidos</a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+                    <div class="welcome-text">
+                        <h2>Bem-vindo, Vitor!</h2>
+                        <p>Veja o resumo do sistema abaixo.</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="notifications">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge">2</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                        <div class="user-info">
+                            <span class="user-name">Vitor Barros</span>
+                            <span class="user-role">Administrador</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-sm"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                
+                <!-- Stat Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue-light"><i class="fa-solid fa-users text-blue"></i></div>
+                        <div class="stat-info">
+                            <h3>56</h3>
+                            <p>Clientes<br>Cadastrados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue-light"><i class="fa-solid fa-cart-shopping text-blue"></i></div>
+                        <div class="stat-info">
+                            <h3>128</h3>
+                            <p>Vendas<br>Realizadas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue-light"><i class="fa-solid fa-filter text-blue"></i></div>
+                        <div class="stat-info">
+                            <h3 class="text-red">8</h3>
+                            <p>Filtros<br>Vencidos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Shortcuts -->
+                <section class="shortcuts-section">
+                    <h3 class="section-title">Atalhos Rápidos</h3>
+                    <div class="shortcuts-grid">
+                        <div class="shortcut-card">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>Cadastrar<br>Cliente</span>
+                        </div>
+                        <div class="shortcut-card">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Buscar<br>Clientes</span>
+                        </div>
+                        <div class="shortcut-card">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Cadastrar<br>Venda</span>
+                        </div>
+                        <div class="shortcut-card">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Localizar<br>Filtros Vencidos</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bottom Grid (Charts & Lists) -->
+                <div class="bottom-grid">
+                    
+                    <!-- Sales Chart Placeholder -->
+                    <div class="chart-card">
+                        <h3 class="section-title">Resumo de Vendas</h3>
+                        <p class="chart-subtitle">Vendas</p>
+                        <div class="chart-placeholder">
+                            <!-- Representação visual do gráfico usando SVG -->
+                            <svg viewBox="0 0 500 150" class="chart-svg">
+                                <path fill="#e0f2fe" d="M0,100 L70,70 L140,100 L210,80 L280,50 L350,20 L420,60 L420,150 L0,150 Z"></path>
+                                <polyline fill="none" stroke="#3b82f6" stroke-width="2" points="0,100 70,70 140,100 210,80 280,50 350,20 420,60"></polyline>
+                                <circle cx="70" cy="70" r="4" fill="#3b82f6"></circle>
+                                <circle cx="140" cy="100" r="4" fill="#3b82f6"></circle>
+                                <circle cx="210" cy="80" r="4" fill="#3b82f6"></circle>
+                                <circle cx="280" cy="50" r="4" fill="#3b82f6"></circle>
+                                <circle cx="350" cy="20" r="4" fill="#3b82f6"></circle>
+                                <circle cx="420" cy="60" r="4" fill="#3b82f6"></circle>
+                            </svg>
+                            <div class="y-axis">
+                                <span>120</span><span>90</span><span>60</span><span>30</span><span>0</span>
+                            </div>
+                            <div class="x-axis">
+                                <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Sales -->
+                    <div class="recent-sales-card">
+                        <h3 class="section-title">Últimas Vendas</h3>
+                        <ul class="sales-list">
+                            <li>
+                                <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
+                                <div class="sale-details">
+                                    <span class="sale-name">João Silva</span>
+                                    <span class="sale-date">31/07/2026</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
+                                <div class="sale-details">
+                                    <span class="sale-name">Maria Oliveira</span>
+                                    <span class="sale-date">31/07/2026</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
+                                <div class="sale-details">
+                                    <span class="sale-name">Carlos Souza</span>
+                                    <span class="sale-date">30/07/2026</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
+                                <div class="sale-details">
+                                    <span class="sale-name">Ana Costa</span>
+                                    <span class="sale-date">30/07/2026</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
+                                <div class="sale-details">
+                                    <span class="sale-name">Pedro Santos</span>
+                                    <span class="sale-date">29/07/2026</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <p>© 2026 GEFIC. Todos os direitos reservados.</p>
+                </footer>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

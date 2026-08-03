@@ -1,0 +1,400 @@
+/*=========================
+RESET
+=========================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+
+    background:linear-gradient(135deg,#d9ebff,#b9d8ff);
+
+}
+
+
+/*=========================
+BACKGROUND
+=========================*/
+
+.background{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(circle at top left,#ffffff90,transparent 35%),
+        radial-gradient(circle at bottom right,#8ec5ff80,transparent 35%),
+        linear-gradient(135deg,#d9ebff,#b8d8ff);
+
+}
+
+
+/*=========================
+CARD LOGIN
+=========================*/
+
+.login-card{
+
+    width:560px;
+
+    background:#fff;
+
+    border-radius:30px;
+
+    padding:35px 45px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.10);
+
+}
+
+
+/*=========================
+TÍTULO
+=========================*/
+
+.login-card h1{
+
+    text-align:center;
+
+    color:#2f82ff;
+
+    font-size:56px;
+
+    font-weight:700;
+
+    letter-spacing:3px;
+
+    margin-bottom:20px;
+
+}
+
+
+/*=========================
+LOGO
+=========================*/
+
+.logo{
+
+    width:180px;
+    height:180px;
+
+    margin:0 auto;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+
+}
+
+.logo img{
+
+    width:400px;
+    
+
+}
+
+
+/*=========================
+SUBTITULO
+=========================*/
+
+.subtitle{
+
+    margin:28px 0;
+
+    text-align:center;
+
+    color:#3464b8;
+
+    font-size:18px;
+
+}
+
+
+/*=========================
+INPUTS
+=========================*/
+
+.input-group{
+
+    height:58px;
+
+    border:2px solid #b4d3ff;
+
+    border-radius:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 18px;
+
+    margin-bottom:18px;
+
+    transition:.3s;
+
+}
+
+.input-group:hover{
+
+    border-color:#5ca7ff;
+
+}
+
+.input-group:focus-within{
+
+    border-color:#2f82ff;
+
+    box-shadow:0 0 8px rgba(47,130,255,.2);
+
+}
+
+.input-group i{
+
+    color:#3c7edf;
+
+    font-size:20px;
+
+}
+
+.input-group input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    margin-left:15px;
+
+    font-size:17px;
+
+    color:#2d4c8d;
+
+}
+
+.eye{
+
+    cursor:pointer;
+
+}
+
+
+/*=========================
+OPÇÕES
+=========================*/
+
+.options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:28px;
+
+    font-size:15px;
+
+}
+
+.options label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#3b64af;
+
+}
+
+.options input{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+.options a{
+
+    text-decoration:none;
+
+    color:#2f82ff;
+
+}
+
+
+/*=========================
+BOTÃO
+=========================*/
+
+button{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:linear-gradient(90deg,#5ba9ff,#2f82ff);
+
+    color:#fff;
+
+    font-size:21px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(47,130,255,.35);
+
+}
+
+button i{
+
+    margin-right:10px;
+
+}
+
+
+/*=========================
+SEPARADOR
+=========================*/
+
+.separator{
+
+    display:flex;
+
+    align-items:center;
+
+    margin:28px 0;
+
+}
+
+.separator::before,
+.separator::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:#d7e5ff;
+
+}
+
+.separator span{
+
+    margin:0 15px;
+
+    color:#4b6fb5;
+
+    font-size:15px;
+
+}
+
+
+/*=========================
+RODAPÉ
+=========================*/
+
+footer{
+
+    text-align:center;
+
+    color:#4b6fb5;
+
+    font-size:14px;
+
+}
+
+
+/*=========================
+RESPONSIVO
+=========================*/
+
+@media(max-width:768px){
+
+.login-card{
+
+    width:92%;
+
+    padding:30px;
+
+}
+
+.login-card h1{
+
+    font-size:44px;
+
+}
+
+.logo{
+
+    width:150px;
+    height:150px;
+
+}
+
+.logo img{
+
+    width:95px;
+
+}
+
+.subtitle{
+
+    font-size:16px;
+
+}
+
+.input-group{
+
+    height:52px;
+
+}
+
+button{
+
+    height:52px;
+
+    font-size:18px;
+
+}
+
+}
