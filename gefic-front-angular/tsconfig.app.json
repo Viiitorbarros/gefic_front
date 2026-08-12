@@ -7,7 +7,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/dashboard/dashboard.service"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]
