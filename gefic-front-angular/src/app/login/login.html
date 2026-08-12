@@ -24,7 +24,10 @@
 
                 <input
                         type="text"
-                        placeholder="Login">
+                        placeholder="Login"
+                        name = "Username"
+                        [(ngModel)]="credenciais.username" >
+                        
 
             </div>
 
@@ -34,7 +37,9 @@
 
                 <input
                         type="password"
-                        placeholder="Senha">
+                        placeholder="Senha"
+                        name="password"
+                        [(ngModel)]="credenciais.password">
 
                 <i class="fa-regular fa-eye eye"></i>
 
@@ -58,13 +63,11 @@
 
             </div>
 
-            <button type="submit">
-
+           <button type="button" (click)="entrar()">
+            
                 <i class="fa-solid fa-right-to-bracket"></i>
-
                 Entrar
-
-            </button>
+        </button>
 
         </form>
 
