@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,16 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080'; 
+  private apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 
   fazerLogin(dadosLogin: any): Observable<any> {
     const credenciaisCodificadas = btoa(dadosLogin.username + ':' + dadosLogin.password);
-
-    // Salva o crachá no armazenamento do navegador
-    localStorage.setItem('auth_token', credenciaisCodificadas);
-
     const headers = new HttpHeaders({
       'Authorization': 'Basic ' + credenciaisCodificadas
     });
