@@ -1,14 +1,18 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardService, UltimaVenda, VendaMensal } from './dashboard.service';
+import { ClienteService } from '../clientes/cliente.service'; // <-- Import do serviço de cliente
 import { Chart, registerables } from 'chart.js';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // <-- Import do FormsModule para o Modal funcionar
+
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, FormsModule], // <-- FormsModule adicionado aqui
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -22,9 +26,28 @@ export class Dashboard implements OnInit {
   filtrosVencidos: number = 0;
   ultimasVendas: UltimaVenda[] = [];
 
+  // ==========================================
+  // VARIÁVEIS DO MODAL DE CLIENTE
+  // ==========================================
+  mostrarModalCliente: boolean = false;
+  mensagemErroModal: string = '';
+  mensagemSucessoModal: string = '';
+  
+  // Objeto mapeado exatamente como no Java
+  novoCliente = {
+    nome: '',
+    numeroTelefone: '',
+    email: '',
+    endereco: '',
+    bairro: '',
+    cidade: ''
+  };
+
   constructor(
     private dashboardService: DashboardService,
+    private clienteService: ClienteService, // <-- Serviço injetado no construtor
     private cdr: ChangeDetectorRef
+  
   ) {}
 
   ngOnInit(): void {
@@ -105,6 +128,49 @@ export class Dashboard implements OnInit {
             grid: { display: false }
           }
         }
+      }
+    });
+  }
+
+  // ==========================================
+  // FUNÇÕES DO MODAL DE CLIENTE
+  // ==========================================
+  abrirModalCliente() {
+    this.mostrarModalCliente = true;
+    this.mensagemErroModal = '';
+    this.mensagemSucessoModal = '';
+    this.cdr.detectChanges();
+  }
+
+ fecharModalCliente() {
+    this.mostrarModalCliente = false;
+    
+    // Limpa os dados ao fechar
+    this.novoCliente = { nome: '', numeroTelefone: '', email: '', endereco: '', bairro: '', cidade: '' };
+    
+    // ADICIONE ESTA LINHA: Força o Angular a sumir com a janela na mesma hora!
+    this.cdr.detectChanges(); 
+  }
+
+  salvarCliente() {
+    this.mensagemErroModal = '';
+    this.mensagemSucessoModal = '';
+
+    this.clienteService.cadastrar(this.novoCliente).subscribe({
+      next: (resposta) => {
+        this.mensagemSucessoModal = 'Cliente cadastrado com sucesso!';
+        
+        // Atualiza o contador de clientes no dashboard na mesma hora
+        this.carregarResumo(); 
+        
+        // Fecha a janelinha após 1,5 segundos
+        setTimeout(() => {
+          this.fecharModalCliente();
+        }, 400);
+      },
+      error: (erro) => {
+        this.mensagemErroModal = 'Erro ao cadastrar. Verifique os dados.';
+        console.error('Erro:', erro);
       }
     });
   }

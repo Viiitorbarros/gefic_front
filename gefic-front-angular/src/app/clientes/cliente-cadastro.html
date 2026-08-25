@@ -1,0 +1,144 @@
+<div class="dashboard-container">
+
+  <aside class="sidebar">
+    <div class="logo-container">
+      <h1 class="logo-text">GEFIC</h1>
+      <img src="logo.png" alt="Logo GEFIC" class="logo-img">
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="justify-content: center;">
+        Início
+      </a>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Clientes</span>
+        </div>
+        <a routerLink="/clientes/novo" class="nav-sub-item" routerLinkActive="active">Cadastrar Cliente</a>
+        <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active">Buscar Clientes</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Vendas</span>
+        </div>
+        <a routerLink="/vendas/nova" class="nav-sub-item" routerLinkActive="active">Cadastrar Venda</a>
+        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active">Buscar Vendas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Filtros</span>
+        </div>
+        <a routerLink="/filtros-vencidos" class="nav-sub-item" routerLinkActive="active">Filtros Vencidos</a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a routerLink="/login" class="nav-item logout" style="justify-content: center;">
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="welcome-text">
+          <h2>Cadastrar Cliente</h2>
+          <p>Preencha os campos abaixo para adicionar um novo cliente.</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge">2</span>
+        </div>
+        <div class="user-profile">
+          <div class="avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="user-info">
+            <span class="user-name">Vitor Barros</span>
+            <span class="user-role">Administrador</span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-sm"></i>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="card" style="max-width: 650px; margin: 0 auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color);">
+        
+        <h3 class="section-title" style="margin-bottom: 20px;">Dados do Cliente</h3>
+
+        <div *ngIf="mensagemSucesso" class="alert success" style="padding: 12px; border-radius: 6px; margin-bottom: 15px; background: #dcfce7; color: #166534; font-weight: 500;">
+          {{ mensagemSucesso }}
+        </div>
+        <div *ngIf="mensagemErro" class="alert error" style="padding: 12px; border-radius: 6px; margin-bottom: 15px; background: #fee2e2; color: #991b1b; font-weight: 500;">
+          {{ mensagemErro }}
+        </div>
+
+        <form (ngSubmit)="salvarCliente()" #clienteForm="ngForm">
+          
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: var(--text-dark);">Nome Completo *</label>
+            <input type="text" name="nome" [(ngModel)]="cliente.nome" required
+                   style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px;"
+                   placeholder="Ex: Maria da Silva">
+          </div>
+
+          <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: var(--text-dark);">Telefone</label>
+              <input type="text" name="numeroTelefone" [(ngModel)]="cliente.numeroTelefone"
+                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px;"
+                     placeholder="(22) 99999-9999">
+            </div>
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: var(--text-dark);">E-mail</label>
+              <input type="email" name="email" [(ngModel)]="cliente.email"
+                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px;"
+                     placeholder="maria@email.com">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: var(--text-dark);">Endereço</label>
+            <input type="text" name="endereco" [(ngModel)]="cliente.endereco"
+                   style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px;"
+                   placeholder="Rua, Número, Complemento">
+          </div>
+
+          <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: var(--text-dark);">Bairro</label>
+              <input type="text" name="bairro" [(ngModel)]="cliente.bairro"
+                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px;"
+                     placeholder="Centro">
+            </div>
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: var(--text-dark);">Cidade</label>
+              <input type="text" name="cidade" [(ngModel)]="cliente.cidade"
+                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px;"
+                     placeholder="Nova Friburgo">
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <a routerLink="/dashboard" style="padding: 10px 18px; background: var(--sidebar-bg); color: var(--text-dark); text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center;">
+              Cancelar
+            </a>
+            <button type="submit" [disabled]="!clienteForm.form.valid"
+                    style="padding: 10px 20px; background: var(--primary-blue); color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer;">
+              Salvar Cliente
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+</div>

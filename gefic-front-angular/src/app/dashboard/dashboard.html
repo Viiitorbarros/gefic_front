@@ -1,49 +1,49 @@
 <div class="dashboard-container">
 
   <!-- Sidebar -->
+  <!-- ========================================== -->
+  <!-- SIDEBAR PADRÃO (SUBSTITUA EM TODAS AS TELAS) -->
+  <!-- ========================================== -->
   <aside class="sidebar">
     <div class="logo-container">
       <h1 class="logo-text">GEFIC</h1>
-      <div class="logo-icon">
-        <i class="fa-solid fa-chart-line"></i>
-      </div>
+      <img src="logo.png" alt="Logo GEFIC" class="logo-img"> <!-- Círculo azul vazio -->
     </div>
 
     <nav class="sidebar-nav">
-      <a href="#" class="nav-item active">
-        <i class="fa-solid fa-house"></i> Início
+      <!-- O routerLinkActive="active" vai deixar azul automaticamente! -->
+      <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="justify-content: center;">
+        Início
       </a>
 
       <div class="nav-group">
         <div class="nav-title">
-          <span><i class="fa-regular fa-user"></i> Clientes</span>
-          <i class="fa-solid fa-chevron-down nav-arrow"></i>
+          <span>Clientes</span>
         </div>
-        <a href="#" class="nav-sub-item"><i class="fa-solid fa-user-plus"></i> Cadastrar Cliente</a>
-        <a href="#" class="nav-sub-item"><i class="fa-solid fa-magnifying-glass"></i> Buscar Clientes</a>
+        <!-- O routerLink foi trocado pelo (click) para abrir a janelinha! -->
+        <a (click)="abrirModalCliente()" class="nav-sub-item" style="cursor: pointer;">Cadastrar Cliente</a>
+        <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active">Buscar Clientes</a>
       </div>
 
       <div class="nav-group">
         <div class="nav-title">
-          <span><i class="fa-solid fa-cart-shopping"></i> Vendas</span>
-          <i class="fa-solid fa-chevron-down nav-arrow"></i>
+          <span>Vendas</span>
         </div>
-        <a href="#" class="nav-sub-item"><i class="fa-solid fa-cart-plus"></i> Cadastrar Venda</a>
-        <a href="#" class="nav-sub-item"><i class="fa-solid fa-magnifying-glass"></i> Buscar Vendas</a>
+        <a routerLink="/vendas/nova" class="nav-sub-item" routerLinkActive="active">Cadastrar Venda</a>
+        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active">Buscar Vendas</a>
       </div>
 
       <div class="nav-group">
         <div class="nav-title">
-          <span><i class="fa-solid fa-filter"></i> Filtros</span>
-          <i class="fa-solid fa-chevron-right nav-arrow"></i>
+          <span>Filtros</span>
         </div>
-        <a href="#" class="nav-sub-item"><i class="fa-solid fa-triangle-exclamation"></i> Filtros Vencidos</a>
+        <a routerLink="/filtros-vencidos" class="nav-sub-item" routerLinkActive="active">Filtros Vencidos</a>
       </div>
     </nav>
 
     <div class="sidebar-footer">
-      <a href="#" class="nav-item logout">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+      <a routerLink="/login" class="nav-item logout" style="justify-content: center;">
+        Sair
       </a>
     </div>
   </aside>
@@ -108,19 +108,20 @@
       <section class="shortcuts-section">
         <h3 class="section-title">Atalhos Rápidos</h3>
         <div class="shortcuts-grid">
-          <div class="shortcut-card">
+          <!-- Atalho alterado para abrir o Modal -->
+          <div class="shortcut-card" (click)="abrirModalCliente()" style="cursor: pointer;">
             <i class="fa-solid fa-user-plus"></i>
             <span>Cadastrar<br>Cliente</span>
           </div>
-          <div class="shortcut-card">
+          <div class="shortcut-card" routerLink="/clientes" style="cursor: pointer;">
             <i class="fa-solid fa-magnifying-glass"></i>
             <span>Buscar<br>Clientes</span>
           </div>
-          <div class="shortcut-card">
+          <div class="shortcut-card" routerLink="/vendas/nova" style="cursor: pointer;">
             <i class="fa-solid fa-cart-plus"></i>
             <span>Cadastrar<br>Venda</span>
           </div>
-          <div class="shortcut-card">
+          <div class="shortcut-card" routerLink="/filtros-vencidos" style="cursor: pointer;">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span>Localizar<br>Filtros Vencidos</span>
           </div>
@@ -132,36 +133,95 @@
 
         <!-- Sales Chart Placeholder -->
         <div class="chart-card">
-  <h3 class="section-title">Resumo de Vendas</h3>
-  <p class="chart-subtitle">Vendas</p>
-  <div style="position: relative; height: 220px; width: 100%;">
-    <canvas #salesChart></canvas>
-  </div>
-  </div>
-
-          <!-- Recent Sales -->
-          <div class="recent-sales-card">
-            <h3 class="section-title">Últimas Vendas</h3>
-            <ul class="sales-list">
-              @for (venda of ultimasVendas; track venda.id) {
-                <li>
-                  <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
-                  <div class="sale-details">
-                    <span class="sale-name">{{ venda.nomeCliente }}</span>
-                    <span class="sale-date">{{ venda.dataVenda | date:'dd/MM/yyyy' }}</span>
-                  </div>
-                </li>
-              } @empty {
-                <li style="padding: 12px; color: #6b7280;">Nenhuma venda recente encontrada.</li>
-              }
-            </ul>
+          <h3 class="section-title">Resumo de Vendas</h3>
+          <p class="chart-subtitle">Vendas</p>
+          <div style="position: relative; height: 220px; width: 100%;">
+            <canvas #salesChart></canvas>
           </div>
-
         </div>
+
+        <!-- Recent Sales -->
+        <div class="recent-sales-card">
+          <h3 class="section-title">Últimas Vendas</h3>
+          <ul class="sales-list">
+            @for (venda of ultimasVendas; track venda.id) {
+              <li>
+                <div class="sale-icon"><i class="fa-regular fa-user"></i></div>
+                <div class="sale-details">
+                  <span class="sale-name">{{ venda.nomeCliente }}</span>
+                  <span class="sale-date">{{ venda.dataVenda | date:'dd/MM/yyyy' }}</span>
+                </div>
+              </li>
+            } @empty {
+              <li style="padding: 12px; color: #6b7280;">Nenhuma venda recente encontrada.</li>
+            }
+          </ul>
+        </div>
+
+      </div>
 
       <footer class="footer">
         <p>© 2026 GEFIC. Todos os direitos reservados.</p>
       </footer>
     </div>
   </main>
+  
+  <!-- ========================================== -->
+  <!-- OVERLAY DO MODAL DE CADASTRO DE CLIENTE    -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" *ngIf="mostrarModalCliente">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Novo Cliente</h2>
+        <button class="btn-close" (click)="fecharModalCliente()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Mensagens de Alerta -->
+      <div *ngIf="mensagemSucessoModal" class="alert success">{{ mensagemSucessoModal }}</div>
+      <div *ngIf="mensagemErroModal" class="alert error">{{ mensagemErroModal }}</div>
+
+      <form (ngSubmit)="salvarCliente()" #formCliente="ngForm">
+        
+        <div class="form-group">
+          <label>Nome Completo *</label>
+          <input type="text" name="nome" [(ngModel)]="novoCliente.nome" required placeholder="Ex: Maria Silva">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" name="numeroTelefone" [(ngModel)]="novoCliente.numeroTelefone" placeholder="(99) 99999-9999">
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" name="email" [(ngModel)]="novoCliente.email" placeholder="email@exemplo.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Endereço</label>
+          <input type="text" name="endereco" [(ngModel)]="novoCliente.endereco" placeholder="Rua, Número, Complemento">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" name="bairro" [(ngModel)]="novoCliente.bairro" placeholder="Centro">
+          </div>
+          <div class="form-group">
+            <label>Cidade</label>
+            <input type="text" name="cidade" [(ngModel)]="novoCliente.cidade" placeholder="Nova Friburgo">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="fecharModalCliente()">Cancelar</button>
+          <!-- O botão só fica ativo se o formulário for válido (nome preenchido) -->
+          <button type="submit" class="btn-save" [disabled]="!formCliente.form.valid">Salvar Cliente</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
 </div>

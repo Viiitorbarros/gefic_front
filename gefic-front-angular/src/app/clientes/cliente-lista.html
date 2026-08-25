@@ -1,0 +1,185 @@
+<div class="dashboard-container">
+  
+  <!-- ========================================== -->
+  <!-- SIDEBAR PADRÃO (SUBSTITUA EM TODAS AS TELAS) -->
+  <!-- ========================================== -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <h1 class="logo-text">GEFIC</h1>
+      <img src="logo.png" alt="Logo GEFIC" class="logo-img">
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- O routerLinkActive="active" vai deixar azul automaticamente! -->
+      <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="justify-content: center;">
+        Início
+      </a>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Clientes</span>
+        </div>
+        <!-- Alterado para abrir o Modal -->
+        <a (click)="abrirModalCliente()" class="nav-sub-item" style="cursor: pointer;">Cadastrar Cliente</a>
+        
+        <!-- Mantém o routerLink e alinha o texto quando estiver azul -->
+        <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active" style="justify-content: center; padding-left: 15px;">Buscar Clientes</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Vendas</span>
+        </div>
+        <a routerLink="/vendas/nova" class="nav-sub-item" routerLinkActive="active">Cadastrar Venda</a>
+        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active" style="justify-content: center; padding-left: 15px;">Buscar Vendas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Filtros</span>
+        </div>
+        <a routerLink="/filtros-vencidos" class="nav-sub-item" routerLinkActive="active" style="justify-content: center; padding-left: 15px;">Filtros Vencidos</a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a routerLink="/login" class="nav-item logout" style="justify-content: center;">
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- ========================================== -->
+  <!-- CONTEÚDO DA PÁGINA                         -->
+  <!-- ========================================== -->
+  <main class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="welcome-text">
+          <h2>Lista de Clientes</h2>
+          <p>Gerencie os clientes cadastrados no sistema.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo da Tabela -->
+    <div class="dashboard-content">
+      <div class="card" style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color);">
+        
+        <!-- Barra de Busca -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+          <h3 class="section-title" style="margin: 0;">Buscar Clientes</h3>
+          <div style="position: relative; width: 350px;">
+            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 12px; color: var(--text-muted);"></i>
+            <input type="text" [(ngModel)]="termoBusca" (input)="filtrarClientes()" placeholder="Busque por nome, e-mail ou telefone..." 
+                   style="width: 100%; padding: 10px 10px 10px 35px; border: 1px solid var(--border-color); border-radius: 8px; outline: none;">
+          </div>
+        </div>
+
+        <!-- Tabela -->
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color);">
+              <th style="padding: 15px 10px; color: var(--text-muted); font-weight: 600;">Nome</th>
+              <th style="padding: 15px 10px; color: var(--text-muted); font-weight: 600;">E-mail</th>
+              <th style="padding: 15px 10px; color: var(--text-muted); font-weight: 600;">Telefone</th>
+              <th style="padding: 15px 10px; color: var(--text-muted); font-weight: 600;">Cidade</th>
+              <th style="padding: 15px 10px; color: var(--text-muted); font-weight: 600; text-align: center;">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (cliente of clientesFiltrados; track cliente.id) {
+              <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                <td style="padding: 15px 10px; font-weight: 500; color: var(--text-dark);">{{ cliente.nome }}</td>
+                <td style="padding: 15px 10px; color: var(--text-muted);">{{ cliente.email || 'Não informado' }}</td>
+                <td style="padding: 15px 10px; color: var(--text-muted);">{{ cliente.numeroTelefone || 'Não informado' }}</td>
+                <td style="padding: 15px 10px; color: var(--text-muted);">{{ cliente.cidade || 'Não informada' }}</td>
+                <td style="padding: 15px 10px; text-align: center;">
+                  <!-- Botão de Editar (COM TEXTO E COR) -->
+                  <button (click)="abrirModalEdicao(cliente)" style="padding: 6px 12px; background-color: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; font-weight: 500; font-size: 13px;">
+                    Editar
+                  </button>
+                  <!-- Botão de Excluir (COM TEXTO E COR) -->
+                  <button style="padding: 6px 12px; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 13px;">
+                    Excluir
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" style="padding: 30px; text-align: center; color: var(--text-muted);">Nenhum cliente encontrado.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- OVERLAY DO MODAL DE CADASTRO/EDIÇÃO        -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" *ngIf="mostrarModalCliente">
+    <div class="modal-box">
+      <div class="modal-header">
+        <!-- O TÍTULO AGORA É DINÂMICO! -->
+        <h2>{{ isEditando ? 'Editar Cliente' : 'Novo Cliente' }}</h2>
+        <button class="btn-close" (click)="fecharModalCliente()">
+           <i class="fa-solid fa-xmark" style="font-style: normal; font-family: sans-serif;">x</i>
+        </button>
+      </div>
+
+      <div *ngIf="mensagemSucessoModal" class="alert success">{{ mensagemSucessoModal }}</div>
+      <div *ngIf="mensagemErroModal" class="alert error">{{ mensagemErroModal }}</div>
+
+      <form (ngSubmit)="salvarCliente()" #formCliente="ngForm">
+        
+        <div class="form-group">
+          <label>Nome Completo *</label>
+          <input type="text" name="nome" [(ngModel)]="novoCliente.nome" required placeholder="Ex: Maria Silva">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" name="numeroTelefone" [(ngModel)]="novoCliente.numeroTelefone" placeholder="(99) 99999-9999">
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" name="email" [(ngModel)]="novoCliente.email" placeholder="email@exemplo.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Endereço</label>
+          <input type="text" name="endereco" [(ngModel)]="novoCliente.endereco" placeholder="Rua, Número, Complemento">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" name="bairro" [(ngModel)]="novoCliente.bairro" placeholder="Centro">
+          </div>
+          <div class="form-group">
+            <label>Cidade</label>
+            <input type="text" name="cidade" [(ngModel)]="novoCliente.cidade" placeholder="Nova Friburgo">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="fecharModalCliente()">Cancelar</button>
+          
+          <!-- O BOTÃO DE SALVAR TAMBÉM É DINÂMICO! -->
+          <button type="submit" class="btn-save" [disabled]="!formCliente.form.valid">
+            {{ isEditando ? 'Atualizar Dados' : 'Salvar Cliente' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
