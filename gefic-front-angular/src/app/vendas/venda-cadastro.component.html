@@ -1,0 +1,134 @@
+<div class="dashboard-container">
+  
+  <!-- ========================================== -->
+  <!-- SIDEBAR PADRÃO                             -->
+  <!-- ========================================== -->
+   <aside class="sidebar">
+    <div class="logo-container">
+      <h1 class="logo-text">GEFIC</h1>
+      <img src="logo.png" alt="Logo GEFIC" class="logo-img">
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="justify-content: center;">
+        Início
+      </a>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Clientes</span>
+        </div>
+        <a routerLink="/clientes/novo" class="nav-sub-item" routerLinkActive="active">Cadastrar Cliente</a>
+        <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active">Buscar Clientes</a>
+      </div>
+
+     <div class="nav-group">
+        <div class="nav-title">
+          <span>Vendas</span>
+        </div>
+        <a routerLink="/vendas/nova" class="nav-sub-item" routerLinkActive="active">Cadastrar Venda</a>
+        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Buscar Vendas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">
+          <span>Filtros</span>
+        </div>
+        <a routerLink="/filtros-vencidos" class="nav-sub-item" routerLinkActive="active">Filtros Vencidos</a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a routerLink="/login" class="nav-item logout" style="justify-content: center;">
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- ========================================== -->
+  <!-- CONTEÚDO DA PÁGINA                         -->
+  <!-- ========================================== -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="welcome-text">
+          <!-- O Título muda sozinho! -->
+          <h2>{{ isEdicao ? 'Editar Venda' : 'Nova Venda' }}</h2>
+          <p>{{ isEdicao ? 'Atualize as informações desta venda.' : 'Preencha os dados abaixo para registrar uma nova venda.' }}</p>
+        </div>
+      </div>
+    </header>
+    
+    <div class="dashboard-content">
+      <div class="card" style="background: white; border-radius: 12px; padding: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: 800px;">
+        
+        <div *ngIf="mensagemSucesso" style="background-color: #dcfce7; color: #166534; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+          {{ mensagemSucesso }}
+        </div>
+        <div *ngIf="mensagemErro" style="background-color: #fee2e2; color: #991b1b; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+          {{ mensagemErro }}
+        </div>
+
+        <form (ngSubmit)="salvarVenda()" #formVenda="ngForm">
+          
+         <!-- Seleção do Cliente com Busca -->
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-dark);">Selecione o Cliente *</label>
+            
+            <!-- NOSSO NOVO CAMPO DE BUSCA -->
+            <input type="text" 
+                   [(ngModel)]="termoBuscaCliente" 
+                   name="buscaCliente" 
+                   (input)="filtrarClientesList()" 
+                   placeholder="🔍 Digite o nome do cliente para buscar..." 
+                   style="width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+
+            <!-- O SELECT AGORA USA A LISTA FILTRADA -->
+            <select name="clienteId" [(ngModel)]="novaVenda.clienteId" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; background-color: #f8fafc;">
+              <option [ngValue]="null" disabled selected>Escolha um cliente na lista...</option>
+              @for (cliente of clientesFiltrados; track $index) {
+                <option [ngValue]="cliente.id">{{ cliente.nome }}</option>
+              }
+            </select>
+          </div>
+          
+          <!-- Nome do Produto -->
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-dark);">Nome do Produto *</label>
+            <input type="text" name="nomeDoProduto" [(ngModel)]="novaVenda.nomeDoProduto" required placeholder="Ex: Filtro de Água X" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+          </div>
+
+          <!-- Datas -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+            <div>
+              <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-dark);">Data da Compra *</label>
+              <input type="date" name="dataDaCompra" [(ngModel)]="novaVenda.dataDaCompra" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+            </div>
+            
+            <div>
+              <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-dark);">Última Troca *</label>
+              <input type="date" name="dataDaUltimaTroca" [(ngModel)]="novaVenda.dataDaUltimaTroca" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+            </div>
+
+            <div>
+              <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-dark);">Vencimento *</label>
+              <input type="date" name="dataDoVencimento" [(ngModel)]="novaVenda.dataDoVencimento" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+            </div>
+          </div>
+
+          <!-- Botões com lógica de Edição -->
+          <div style="display: flex; gap: 15px; margin-top: 20px; justify-content: flex-end;">
+            <button type="button" routerLink="/vendas" style="padding: 12px 24px; background-color: white; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='white'">
+              Cancelar
+            </button>
+            <button type="submit" [disabled]="!formVenda.form.valid" style="padding: 12px 24px; background-color: var(--primary-blue, #2563eb); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+              <!-- O Botão muda sozinho! -->
+              {{ isEdicao ? 'Atualizar Venda' : 'Salvar Venda' }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
