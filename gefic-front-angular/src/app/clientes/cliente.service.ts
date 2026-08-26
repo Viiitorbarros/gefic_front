@@ -27,18 +27,13 @@ export class ClienteService {
   return this.http.get<any[]>(this.API_URL, { headers: this.getHeaders() });
   }
 
- atualizar(id: number, cliente: any) {
-    // 1. Pega o token que foi salvo no login 
-    const token = localStorage.getItem('token'); 
-    
-    // 2. Cria o cabeçalho de autorização
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    };
+  atualizar(id: number, cliente: any): Observable<any> {
+    return this.http.put<any>(`${this.API_URL}/${id}`, cliente, { headers: this.getHeaders() });
+  }
 
-    // 3. Envia a requisição com os cabeçalhos
-    // Repare na barra antes do ${id}, ela impede erros na URL!
-    return this.http.put(`${this.API_URL}/${id}`, cliente, { headers }); 
+  excluir(id: number): Observable<any> {
+    // Envia o DELETE com o ID e o Token de autorização!
+    return this.http.delete<any>(`${this.API_URL}/${id}`, { headers: this.getHeaders() });
   }
 
 }

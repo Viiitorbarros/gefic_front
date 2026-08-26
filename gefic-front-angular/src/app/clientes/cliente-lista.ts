@@ -71,16 +71,26 @@ export class ClienteLista implements OnInit {
   isEditando: boolean = false; 
 
   abrirModalCliente() {
-    this.isEditando = false; // Modo Criação
-    this.novoCliente = { nome: '', numeroTelefone: '', email: '', endereco: '', bairro: '', cidade: '' };
+    this.isEditando = false; 
+    this.novoCliente = { id: null, nome: '', numeroTelefone: '', email: '', endereco: '', bairro: '', cidade: '' };
+    
+    // Zera as mensagens antes de abrir!
+    this.mensagemSucessoModal = '';
+    this.mensagemErroModal = '';
+    
     this.mostrarModalCliente = true;
     this.cdr.detectChanges();
   }
 
   // NOVA FUNÇÃO: Abre a janelinha já com os dados preenchidos
   abrirModalEdicao(cliente: any) {
-    this.isEditando = true; // Modo Edição
-    this.novoCliente = { ...cliente }; // O "..." cria uma cópia exata do cliente para não alterar a tabela antes de salvar
+    this.isEditando = true; 
+    this.novoCliente = { ...cliente }; 
+    
+    // Zera as mensagens antes de abrir!
+    this.mensagemSucessoModal = '';
+    this.mensagemErroModal = '';
+    
     this.mostrarModalCliente = true;
     this.cdr.detectChanges();
   }
@@ -107,10 +117,11 @@ export class ClienteLista implements OnInit {
           
           setTimeout(() => {
             this.fecharModalCliente();
-          }, 1500); // Deixei 1.5s para dar tempo de ler a mensagem verde
+          }, 500); // Deixei 0.5s para dar tempo de ler a mensagem verde
         },
         error: (erro) => {
           this.mensagemErroModal = 'Erro ao atualizar os dados do cliente.';
+          this.cdr.detectChanges(); // <-- Adicione esta linha!
         }
       });
 
@@ -133,4 +144,29 @@ export class ClienteLista implements OnInit {
       });
     }
   }
+
+  excluirCliente(cliente: any) {
+    const confirmacao = window.confirm(`Tem certeza que deseja excluir o cliente ${cliente.nome}?`);
+    
+    if (confirmacao) {
+      this.clienteService.excluir(cliente.id).subscribe({
+        next: (resposta) => {
+          alert('Cliente excluído com sucesso!'); 
+          
+          // Arranca o cliente da lista principal imediatamente
+          this.clientes = this.clientes.filter(c => c.id !== cliente.id);
+          
+          // Roda o seu filtro para atualizar a tabela visual (clientesFiltrados)
+          this.filtrarClientes(); 
+          
+          //  Força a tela a desenhar a tabela nova
+          this.cdr.detectChanges();
+        },
+        error: (erro) => {
+          alert('Erro ao excluir. Este cliente pode ter vendas amarradas a ele no banco de dados.');
+        }
+      });
+    }
+  }
+
 }

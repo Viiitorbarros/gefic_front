@@ -10,7 +10,6 @@
     </div>
 
     <nav class="sidebar-nav">
-      <!-- O routerLinkActive="active" vai deixar azul automaticamente! -->
       <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" style="justify-content: center;">
         Início
       </a>
@@ -19,11 +18,8 @@
         <div class="nav-title">
           <span>Clientes</span>
         </div>
-        <!-- Alterado para abrir o Modal -->
         <a (click)="abrirModalCliente()" class="nav-sub-item" style="cursor: pointer;">Cadastrar Cliente</a>
-        
-        <!-- Mantém o routerLink e alinha o texto quando estiver azul -->
-        <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active" style="justify-content: center; padding-left: 15px;">Buscar Clientes</a>
+        <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active">Buscar Clientes</a>
       </div>
 
       <div class="nav-group">
@@ -31,14 +27,14 @@
           <span>Vendas</span>
         </div>
         <a routerLink="/vendas/nova" class="nav-sub-item" routerLinkActive="active">Cadastrar Venda</a>
-        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active" style="justify-content: center; padding-left: 15px;">Buscar Vendas</a>
+        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active">Buscar Vendas</a>
       </div>
 
       <div class="nav-group">
         <div class="nav-title">
           <span>Filtros</span>
         </div>
-        <a routerLink="/filtros-vencidos" class="nav-sub-item" routerLinkActive="active" style="justify-content: center; padding-left: 15px;">Filtros Vencidos</a>
+        <a routerLink="/filtros-vencidos" class="nav-sub-item" routerLinkActive="active">Filtros Vencidos</a>
       </div>
     </nav>
 
@@ -102,7 +98,7 @@
                     Editar
                   </button>
                   <!-- Botão de Excluir (COM TEXTO E COR) -->
-                  <button style="padding: 6px 12px; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 13px;">
+                  <button (click)="excluirCliente(cliente)" style="padding: 6px 12px; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 13px;">
                     Excluir
                   </button>
                 </td>
