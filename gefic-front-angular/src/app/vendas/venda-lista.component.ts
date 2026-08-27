@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { VendaService } from '../vendas/venda.service';
-import { ClienteService } from '../clientes/cliente.service';
+import { VendaService } from '../vendas/venda.service'; // Ajuste o caminho se necessário
+import { ClienteService } from '../clientes/cliente.service'; // Ajuste o caminho se necessário
 
 @Component({
   selector: 'app-venda-lista',
@@ -17,6 +17,17 @@ export class VendaListaComponent implements OnInit {
   clientes: any[] = [];
   termoBuscaVenda: string = '';
 
+  // --- VARIÁVEIS DO MODAL DE CLIENTE ---
+  mostrarModalCliente: boolean = false;
+  novoClienteModal = {
+    nome: '',
+    numeroTelefone: '',
+    email: '',
+    endereco: '',
+    bairro: '',
+    cidade: ''
+  };
+
   constructor(
     private vendaService: VendaService,
     private clienteService: ClienteService,
@@ -25,7 +36,10 @@ export class VendaListaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 1º Carregamos os clientes, depois as vendas
+    this.carregarClientesEVendas();
+  }
+
+  carregarClientesEVendas() {
     this.clienteService.listar().subscribe({
       next: (dadosClientes) => {
         this.clientes = dadosClientes;
@@ -37,12 +51,11 @@ export class VendaListaComponent implements OnInit {
   carregarVendas() {
     this.vendaService.listar().subscribe({
       next: (dadosVendas) => {
-        // Cruzamos os dados: Se o clienteId da venda bater com o do cliente, pegamos o nome
         this.vendas = dadosVendas.map(venda => {
           const clienteEncontrado = this.clientes.find(c => c.id === venda.clienteId);
           return {
             ...venda,
-            nomeCliente: clienteEncontrado ? clienteEncontrado.nome : 'Cliente Deletado/Não Encontrado'
+            nomeCliente: clienteEncontrado ? clienteEncontrado.nome : 'Cliente Não Encontrado'
           };
         });
         
@@ -57,7 +70,6 @@ export class VendaListaComponent implements OnInit {
       this.vendasFiltradas = this.vendas;
     } else {
       const termo = this.termoBuscaVenda.toLowerCase();
-      // Agora o filtro busca TANTO no nome do produto QUANTO no nome do cliente!
       this.vendasFiltradas = this.vendas.filter(v => 
         (v.nomeDoProduto && v.nomeDoProduto.toLowerCase().includes(termo)) ||
         (v.nomeCliente && v.nomeCliente.toLowerCase().includes(termo))
@@ -68,5 +80,36 @@ export class VendaListaComponent implements OnInit {
 
   editarVenda(id: number) {
     this.router.navigate(['/vendas/editar', id]);
+  }
+
+  // ==========================================
+  // FUNÇÕES DO MODAL DE CLIENTE
+  // ==========================================
+  abrirModalCliente() {
+    this.mostrarModalCliente = true;
+    this.cdr.detectChanges();
+  }
+
+  fecharModalCliente() {
+    this.mostrarModalCliente = false;
+    this.novoClienteModal = { 
+      nome: '', numeroTelefone: '', email: '', endereco: '', bairro: '', cidade: '' 
+    };
+    this.cdr.detectChanges();
+  }
+
+  salvarClientePeloModal() {
+    this.clienteService.cadastrar(this.novoClienteModal).subscribe({
+      next: (resposta) => {
+        this.fecharModalCliente();
+        // Recarrega os clientes caso você precise buscar vendas do cliente novo depois
+        this.carregarClientesEVendas(); 
+        alert('Cliente cadastrado com sucesso!');
+      },
+      error: (erro) => {
+        console.error(erro);
+        alert('Erro ao cadastrar o cliente.');
+      }
+    });
   }
 }

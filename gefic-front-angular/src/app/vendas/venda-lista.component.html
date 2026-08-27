@@ -18,7 +18,8 @@
         <div class="nav-title">
           <span>Clientes</span>
         </div>
-        <a routerLink="/clientes/novo" class="nav-sub-item" routerLinkActive="active">Cadastrar Cliente</a>
+        <!-- MUDANÇA AQUI: Agora ele abre o modal em vez de mudar de página! -->
+        <a (click)="abrirModalCliente()" style="cursor: pointer;" class="nav-sub-item">Cadastrar Cliente</a>
         <a routerLink="/clientes" class="nav-sub-item" routerLinkActive="active">Buscar Clientes</a>
       </div>
 
@@ -27,7 +28,7 @@
           <span>Vendas</span>
         </div>
         <a routerLink="/vendas/nova" class="nav-sub-item" routerLinkActive="active">Cadastrar Venda</a>
-        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active">Buscar Vendas</a>
+        <a routerLink="/vendas" class="nav-sub-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Buscar Vendas</a>
       </div>
 
       <div class="nav-group">
@@ -75,7 +76,6 @@
           <table style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
               <tr style="background-color: #f8fafc; border-bottom: 2px solid var(--border-color);">
-                <!-- Coluna de ID removida -->
                 <th style="padding: 15px; font-weight: 600; color: var(--text-dark);">Cliente</th>
                 <th style="padding: 15px; font-weight: 600; color: var(--text-dark);">Produto</th>
                 <th style="padding: 15px; font-weight: 600; color: var(--text-dark);">Data Compra</th>
@@ -87,7 +87,6 @@
             <tbody>
               @for (venda of vendasFiltradas; track $index) {
                 <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='transparent'">
-                  <!-- Dado de ID removido -->
                   <td style="padding: 15px; font-weight: 500;">{{ venda.nomeCliente }}</td>
                   <td style="padding: 15px; font-weight: 500;">{{ venda.nomeDoProduto }}</td>
                   <td style="padding: 15px;">{{ venda.dataDaCompra }}</td>
@@ -102,7 +101,6 @@
               }
               @empty {
                 <tr>
-                  <!-- Ajustado para 6 colunas já que tiramos o ID -->
                   <td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">Nenhuma venda encontrada.</td>
                 </tr>
               }
@@ -113,4 +111,52 @@
       </div>
     </div>
   </main>
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL DE NOVO CLIENTE COMPLETO             -->
+<!-- ========================================== -->
+<!-- Movido para fora da tag <main> para ficar certinho por cima de tudo -->
+<div *ngIf="mostrarModalCliente" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+  
+  <div style="background-color: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;">
+    <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--text-dark);">Cadastrar Novo Cliente</h3>
+    
+    <label style="display: block; font-weight: 500; margin-bottom: 8px;">Nome Completo *</label>
+    <input type="text" [(ngModel)]="novoClienteModal.nome" placeholder="Ex: Maria da Silva" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 15px; outline: none;">
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+      <div>
+        <label style="display: block; font-weight: 500; margin-bottom: 8px;">Telefone</label>
+        <input type="text" [(ngModel)]="novoClienteModal.numeroTelefone" placeholder="(22) 99999-9999" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+      </div>
+      <div>
+        <label style="display: block; font-weight: 500; margin-bottom: 8px;">E-mail</label>
+        <input type="email" [(ngModel)]="novoClienteModal.email" placeholder="maria@email.com" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+      </div>
+    </div>
+
+    <label style="display: block; font-weight: 500; margin-bottom: 8px;">Endereço</label>
+    <input type="text" [(ngModel)]="novoClienteModal.endereco" placeholder="Rua, Número, Complemento" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 15px; outline: none;">
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+      <div>
+        <label style="display: block; font-weight: 500; margin-bottom: 8px;">Bairro</label>
+        <input type="text" [(ngModel)]="novoClienteModal.bairro" placeholder="Centro" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+      </div>
+      <div>
+        <label style="display: block; font-weight: 500; margin-bottom: 8px;">Cidade</label>
+        <input type="text" [(ngModel)]="novoClienteModal.cidade" placeholder="Nova Friburgo" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button (click)="fecharModalCliente()" style="padding: 10px 15px; background: white; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-weight: 500;">
+        Cancelar
+      </button>
+      <button (click)="salvarClientePeloModal()" [disabled]="!novoClienteModal.nome" style="padding: 10px 15px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        Salvar Cliente
+      </button>
+    </div>
+  </div>
 </div>
