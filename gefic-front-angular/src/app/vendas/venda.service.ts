@@ -53,4 +53,15 @@ export class VendaService {
       return this.http.put<any>(`${this.API_URL}/${id}`, venda, { headers });
     }
 
+    listarVencidos(): Observable<any[]> {
+    const token = localStorage.getItem('auth_token');
+    const tokenLimpo = token ? token.replace('Bearer ', '').replace('Basic ', '').trim() : '';
+    
+    const headers = new HttpHeaders({ 
+      'Authorization': `Basic ${tokenLimpo}` 
+    });
+
+    return this.http.get<any[]>(`${this.API_URL}/vencidos`, { headers });
+  }
+
 }
