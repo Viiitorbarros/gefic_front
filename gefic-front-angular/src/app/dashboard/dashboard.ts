@@ -50,10 +50,38 @@ export class Dashboard implements OnInit {
   
   ) {}
 
+  // --- VARIÁVEIS DO USUÁRIO ---
+  nomeUsuario: string = 'Administrador'; // Nome completo
+  primeiroNome: string = 'Admin';        // Só o primeiro nome para o "Bem-vindo"
+  iniciais: string = 'AD';               // Letrinhas da bolinha azul
+
+
+  carregarNomeUsuario() {
+    // Busca o nome que nós salvamos lá na tela de Login
+    const nomeSalvo = localStorage.getItem('nome_usuario');
+    
+    // Confere se o nome veio certinho e não está vazio
+    if (nomeSalvo && nomeSalvo !== 'undefined' && nomeSalvo !== 'null' && nomeSalvo !== '') {
+      this.nomeUsuario = nomeSalvo;
+      
+      const partes = nomeSalvo.trim().split(' ');
+      this.primeiroNome = partes[0]; // Pega só o primeiro nome
+      
+      if (partes.length > 1) {
+        // Exemplo: Vitor Barros -> VB
+        this.iniciais = (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+      } else {
+        // Exemplo: Vitor -> VI
+        this.iniciais = partes[0].substring(0, 2).toUpperCase();
+      }
+    }
+  }
+
   ngOnInit(): void {
     this.carregarResumo();
     this.carregarUltimasVendas();
     this.carregarGraficoVendas();
+    this.carregarNomeUsuario();
   }
 
   carregarResumo() {

@@ -12,7 +12,6 @@ import { AuthService } from '../auth.service';
 })
 export class Login {
 
-  // Declarada exatamente com o nome que está no HTML
   credenciais = {
     username: '',
     password: ''
@@ -27,7 +26,17 @@ export class Login {
 
   entrar() {
     this.authService.fazerLogin(this.credenciais).subscribe({
-      next: () => {
+      // Capturamos a resposta do backend aqui
+      next: (resposta: any) => {
+        
+        // Verifica se o seu Spring Boot enviou o nome do usuário no JSON (ex: resposta.nome).
+        // Caso seu backend envie apenas o Token e não envie o nome, 
+        // usamos o username que a pessoa digitou na tela como alternativa.
+        const nomeParaSalvar = (resposta && resposta.nome) ? resposta.nome : this.credenciais.username;
+        
+        // Salva o nome no navegador para o cabeçalho puxar depois
+        localStorage.setItem('nome_usuario', nomeParaSalvar);
+
         this.router.navigate(['/dashboard']);
       },
       error: (erro: any) => {
